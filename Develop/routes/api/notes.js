@@ -10,25 +10,25 @@ fs.readFile('db/db.json', 'utf8', (err, data) => {
     if (err) throw err;
     let noteData = JSON.parse(data);
 
-    notes.get("/", (req, res) => {
+    notes.get('/', (req, res) => {
         res.json(noteData);
        
         console.log(noteData);
     })
 
-    // notes.post('/api/notes', (req, res) => {
-    //     let newNote = req.body;
-    //     noteData.push(newNote);
-    //     updateNote();
-    //     return console.log(`Added a new note: ${newNote.title} `)
-    // });
+    notes.post('/', (req, res) => {
+        let newNote = req.body;
+        noteData.push(newNote);
+        updateNote();
+        return console.log(`Added a new note: ${newNote.title} `)
+    });
 
-    // const updateNote = () => {
-    //     fs.writeFile('db/db.json', JSON.stringify(noteData,'\t'), err =>{
-    //         if (err) throw err;
-    //         return true
-    //     })
-    // };
+    const updateNote = () => {
+        fs.writeFile('db/db.json', JSON.stringify(noteData,'\t'), err =>{
+            if (err) throw err;
+            return true
+        })
+    };
 })
 
 // notes.get('/', (req, res,) => {
