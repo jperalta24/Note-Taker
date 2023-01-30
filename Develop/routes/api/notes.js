@@ -1,70 +1,90 @@
 const notes = require('express').Router();
+const { readFromFile, readAndAppend } = require('../../helpers/fsUtils');
 const fs = require('fs');
+// const db = require('../../db/db.json');
+const uniqid = require('uniqid');
+
+// const db = require('../db/db.json');
+
+
+notes.get('/', (req, res) => {
+    readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)))
+});
+
+
+notes.post('/', (req, res) => {
+    console.log(req.body);
+
+    const { title, text } = req.body;
+
+    if (req.body) {
+        const newNote = {
+            title,
+            text,
+            note_id: uniqid(),
+        };
+
+        readAndAppend(newNote, './db/db.json');
+        res.json('New note added successfully');
+    } else {
+        res.errored('error creating new note');
+    }
+
+
+});
+
+
+
+
+
+
+
+
+
+
+
 // const {
 //     noteData
 // } = require('../../db/db.json');
 
-const { v4: uuidv4 } = require('uuid');
+// let noteData;
 
-fs.readFile('db/db.json', 'utf8', (err, data) => {
-    if (err) throw err;
-    let noteData = JSON.parse(data);
+// notes.get('/', (req, res) => {
+//     res.; 
+// })
 
-    notes.get('/', (req, res) => {
-        res.json(noteData);
-       
-        console.log(noteData);
-    })
+// fs.readFile('db/db.json', 'utf8', (err, data) => {
+//     if (err) throw err;
+//     noteData = JSON.parse(data);
 
-    notes.post('/', (req, res) => {
-        let newNote = req.body;
-        noteData.push(newNote);
-        updateNote();
-        return console.log(`Added a new note: ${newNote.title} `)
-    });
-
-    const updateNote = () => {
-        fs.writeFile('db/db.json', JSON.stringify(noteData,'\t'), err =>{
-            if (err) throw err;
-            return true
-        })
-    };
-})
-
-// notes.get('/', (req, res,) => {
-//     console.log(`${req.method} request for notes`);
-
-//     readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
-
-//     // readFromFile('../db/db.json').then((data) => {
-//     //     console.log(data);
-//     //     res.json(JSON.parse(data));
-//     // })
-// }
-// );
-
-
+// notes.get('/', (req, res) => {
+//     res.sendFile(path.join(__dirname, "../db/db.json"));
+//     fs.readFile('db/db.json', 'utf8', (err, data) => {
+//         if (err) throw err;
+//         noteData = JSON.parse(data);
+//         res.send(noteData);
+//     }
+//     )
+// })
 
 // notes.post('/', (req, res) => {
+//     noteData = fs.readFileSync('db/db.json')
+//     noteData = JSON.parse(noteData)
+//     res.json(noteData);
 
-//     const { title, text } = req.body;
-//     if (title && text) {
-//         const newNote = {
-//             title,
-//             text,
-//             note_id: uuidv4(),
-//         }
-//         readAndAppend(newNote, './db/db.json');
-    
-//     const response = {
-//         status: 'success',
-//         body: newNote,
-//       };
-  
-//       res.json(response);
-//     } else {
-//       res.json('Error');
-//     }
+//     let newNote = {
+//         title: req.body.title,
+//         text: req.body.text,
+//         id: uniqid()
+//     };
+
+//     noteData.push(newNote);
+//     fs.writeFileSync('db/db.json', JSON.stringify(noteData));
+//     res.json(noteData);
+
 // });
+
+
+
 
 module.exports = notes;
