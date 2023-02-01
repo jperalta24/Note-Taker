@@ -19,29 +19,6 @@ notes.get('/', (req, res) => {
 
 notes.post('/', (req, res) => {
 
-    // const newNote = req.body
-    // const {title, text} = req.body
-    // newNote.id = uniqid();
-
-    //  const { title, text } = req.body;
-
-    // if (req.body) {
-    //     const newNote = {
-    //         title,
-    //         text,
-    //         note_id: uniqid(),
-    //     };
-
-
-    // let db = JSON.parse(fs.readFile('./db/db.json'));
-
-    // db.push(newNote);
-
-    // fs.writeFile('./db/db.json', JSON.stringify(db));
-    // res.json(db);
-    // } else {
-    //     res.errored('error creating note')
-    // }
     console.log(req.body);
 
     const { title, text } = req.body;
@@ -50,7 +27,7 @@ notes.post('/', (req, res) => {
         const newNote = {
             title,
             text,
-            note_id: uniqid(),
+            id: uniqid(),
         };
 
         readAndAppend(newNote, './db/db.json');
