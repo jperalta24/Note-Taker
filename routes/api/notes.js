@@ -6,7 +6,7 @@ const uniqid = require('uniqid');
 
 
 
-
+// creates a route for a get request 
 notes.get('/', (req, res) => {
     // readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)))
     fs.readFile('./db/db.json', (err,data) => {
@@ -16,7 +16,7 @@ notes.get('/', (req, res) => {
     })
 });
 
-
+// creates route for a post request
 notes.post('/', (req, res) => {
 
     console.log(req.body);
@@ -40,11 +40,11 @@ notes.post('/', (req, res) => {
 });
 
 notes.delete('/:note_id', (req, res) => {
-    const noteId = req.params.note_id;
+    const noteId = req.params.id;
     readFromFile('./db/db.json')
     .then((data) => JSON.parse(data))
     .then((json) =>{
-        const result = json.filter((note) => {note.note_id !== noteId});
+        const result = json.filter((note) => {note.id !== noteId});
         writeToFile('./db/db.json', result);
 
         res.json('Note has been deleted')
